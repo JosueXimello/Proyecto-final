@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>MusicXV</title>
+	
+</head>
+<body ng-init="menu=0" ng-controller="StoreController as storeC">
+
+<!-- Vista principal-->
+	<div>
+		<header class="header">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			  	<a class="navbar-brand" href="#">Music Store XV</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+				    <span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarColor01">
+					    <ul class="navbar-nav mr-auto">
+						    <li class="nav-item active" ng-click="menu=0" data-target="">
+						        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						    </li>
+						    <li class="nav-item" ng-click="storeC.allProducts(); menu=1;">
+						        <a class="nav-link" href="#">Products</a>
+						    </li>
+						    <li class="nav-item" ng-click="menu=2" ng-show="storeC.userconnect === 0">
+						        <a class="nav-link" href="#">Login</a>
+						    </li>
+						    <li class="nav-item" ng-click="menu=3">
+						        <a class="nav-link" href="#">About</a>
+						    </li>
+						    <li class="nav-item" ng-show="storeC.userroll === 1" ng-click="storeC.allTransactions(); menu=4">
+						        <a class="nav-link" href="#">Transactions</a>
+						    </li>
+						    <li class="nav-item" ng-show="storeC.userroll === 2" ng-click="menu=5">
+						        <a class="nav-link" href="#">Add product</a>
+						    </li>
+					    </ul>
+				    <form class="form-inline my-2 my-lg-0">
+				        <input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="search">
+				        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+				        
+				        <ul style="list-style: none">
+				        	<li class="nav-item dropdown" ng-show="storeC.userconnect === 1">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="">{{storeC.veruser.name | limitTo : 6}}</a>
+				        		<div class="dropdown-menu" x-plasement="top-start">
+				        			<a class="dropdown-item" ng-click="storeC.outUser(storeC.veruser.name);" href="#">LogOut</a>
+
+				        		</div>
+				        	</li>
+				        </ul>
+
+				       <!-- <button class="btn btn-success my-2 my-sm-0 mr-sm-2" ng-show="storeC.userconnect === 1">{{storeC.veruser.name | limitTo : 6}}</button> -->
+				    </form>
+						
+
+				</div>
+			</nav>
+		</header>
+		<hr><br><br><br><br>	
+	</div>
+	<div ng-show="menu===0" id="cuerpo" class="container" >
+		<span id="titPrinc">
+			MUSIC STORE XV
+		</span>
+		<div id="imgCent">
+			<img src="../public/img/img6.png" alt="">
+		</div>
+		<br>
+		<span id="TextWel">
+			Welcome, are you new here?, Explore me and find what you need... 	
+		</span>
+		<br><br>
+	</div>
+
+
+<!-- MenuProduct-->
+	<div ng-show="menu===1" class="container">
+		<br><br>
+			<table>
+				<thead>
+					<span>
+						<br><h2 id="titleTable">Articles</h2><hr>
+					
+					</span>
+				</thead>
+				<tbody> 
+						<tr>
+							<td class="cuadProd" ng-repeat=" product in storeC.products |filter:search"  id="Art"> 		
+								<p>
+	        						<a href="#getUnico" rel="modal:open">
+	        							<img id="ImgProd"  ng-src="{{product.image}}" ng-click="storeC.getUniqueProduct(product._id);" /> <hr>	
+	        						</a>
+	        					</p>
+									
+								Name:{{product.name}} <br>
+		                        Price:{{product.price | currency}} <br>
+							</td>
+						</tr>
+				</tbody>
+			</table>
+
+	<div id="getUnico" class="modal">
+				<p>
+					<br><h2 id="titleTable">{{storeC.product.name}}</h2><hr>
+					<img id=""  ng-src="{{storeC.product.image}}" /> <hr>
+					Name:{{storeC.product.name}} <br>
+			        Price:{{storeC.product.price | currency}} <br>
+			        Description:{{storeC.product.description }} <br>
+			        Stock:{{storeC.product.stock}} <br>
+			        <a class="btn btn-outline-warning my-2 my-sm-0 mr-sm-2" href="#Editar" rel="modal:open" role="button" ng-show="storeC.userroll === 2">Editar producto</a>
+			        <a class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2" href="#"" role="button" ng-click="storeC.deleteProduct(storeC.product._id); storeC.allProducts(); menu = 1" ng-show="storeC.userroll === 2">Eliminar producto</a>
+			 		<a class="btn btn-success my-2 my-sm-0 mr-sm-2" href="#Comprar" rel="modal:open" role="button" ng-click="storeC.getUniqueProduct(storeC.product._id);" ng-show="storeC.userroll === 3">Comprar</a>
+				</p>
+
+			    <a href="#" rel="modal:close">Close</a>
+			</div>
+	</div>
+
+<!-- Menu Editar-->
+
+<div id="Editar" class="modal">
+	<br><h2 id="titleTable">{{storeC.product.name}}</h2><hr>
+	<form>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text"  class="form-control" id="name" ng-model="updateP.name" ng-value="storeC.product.name">
+        </div>
+        <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number"  class="form-control" id="email" ng-model="updateP.price" ng-value="storeC.product.price">
+        </div>
+        <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text"  class="form-control" id="age" ng-model="updateP.description" ng-value="storeC.product.description">
+        </div>
+        <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" class="form-control" id="address" ng-model="updateP.stock" ng-value="storeC.product.stock">
+        </div>
+        <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="text"  class="form-control" id="country" ng-model="updateP.image" ng-value="storeC.product.image">      
+        </div>
+        <div class="form group" pull rigth>
+            <input class="form-control btn btn-lg btn-primary" value="Update" type ="button" id="submit" ng-click="storeC.updateProduct(storeC.product._id, updateP);" rel="modal:close">
+        </div>
+    </form>
+    <a href="#" rel="modal:close">Close</a>
+</div>
+
+
+<!-- Menu Comprar-->
+
+<div id="Comprar" class="modal">
+	<br><h2 id="titleTable">Datos de Compra</h2><hr>
+					<img id=""  ng-src="{{storeC.product.image}}" /> <hr>
+					Name:{{storeC.product.name}} <br>
+			        Price:{{storeC.product.price | currency}} <br>
+			        Description:{{storeC.product.description }} <br>
+			        Stock:{{storeC.product.stock}} <br>
+	<h4>Name: {{storeC.veruser.name}}</h4> <hr>
+	<form>
+        <div class="form-group">
+            <label for="name">Numero de tarjeta:</label>
+            <input type="text"  class="form-control" id="name" ng-model="compra.tarjetan">
+        </div>
+        <div class="form-group">
+                <label for="price">Fecha de vencimiento:</label>
+                <input type="number"  class="form-control" id="email" ng-model="compra.fecha">
+        </div>
+        <div class="form-group">
+                <label for="description">Costo:</label>
+                {{storeC.compra.price = storeC.product.price}}
+        </div>
+        <hr>
+        
+        <div class="form group" pull rigth>
+            <input class="form-control btn btn-lg btn-primary" value="Purchase" type ="button" id="submit" ng-click="storeC.buyProduct();" rel="modal:close">
+        </div>
+    </form>
+    <a href="#" rel="modal:close">Close</a>
+</div>
+
+
+<!-- Menu Login -->
+
+	<div ng-show="menu===2" class="container">
+		<br><br>
+		
+		<div id="MDiv1" class="container">
+
+			<div class="modal-title">
+				<br><h4>Sign-in</h4><hr>
+			</div>
+			<div>
+				<form action="">
+					
+					<label for="login">User:</label> 
+					<input class="form-control" type="text" name="login" id="login" ng-model="valuser.name">
+				
+					<label for="Password">Password:</label>
+					<input class="form-control" type="Password" name="password" id="Password" ng-model="valuser.pass">
+					<br>
+					<input id="inBot" ng-click="storeC.valUser(valuser)" type="button" class="button btn btn-primary" value="Sing-in">
+					<br><br>
+				</form>
+			</div>
+			<div class="modal-footer">
+        		<p>
+        			<a href="#ex1" rel="modal:open">Register</a>
+        		</p>
+	        </div>
+		</div>
+		
+	</div>
+
+
+<!-- Modal Register-->
+
+<div id="ex1" class="modal">
+	<form>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text"  class="form-control" id="name" ng-model="createuser.name">
+        </div>
+        <div class="form-group">
+                <label for="email">e-mail:</label>
+                <input type="text"  class="form-control" id="email" ng-model="createuser.email">
+        </div>
+        <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number"  class="form-control" id="age" ng-model="createuser.age">
+        </div>
+        <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" id="address" ng-model="createuser.adress">
+        </div>
+        <div class="form-group">
+                    <label for="country">Country:</label>
+                    <input type="text"  class="form-control" id="country" ng-model="createuser.country">      
+        </div>
+        <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password"  class="form-control" id="password" ng-model="createuser.pass">      
+        </div>
+		<div class="form-group">
+                <label for="password">Roll:</label>
+                <input type="password"  class="form-control" id="password" ng-model="createuser.roll">      
+        </div>
+
+        <div class="form group" pull rigth>
+            <input class="form-control btn btn-lg btn-primary" value="Send" type ="button" id="submit" ng-click="storeC.createUser(createuser);" rel="modal:close">
+        </div>
+    </form>
+    <a href="#" rel="modal:close">Close</a>
+</div>
+
+<!-- Menu Aboute  -->
+
+	<div id="about" class="container" ng-show="menu===3">
+		<div id="MDiv">
+			<header>
+				<h1>Music Store XV</h1>
+			</header><br><br><hr>
+
+			<p class="aboutText">
+				We are a group of people selling all kinds of instruments.
+				<br>
+				We make your life easier... Search here and find what you like most!
+				<br><br><br><br><br>
+
+			</p>
+		</div>
+	</div>
+
+<!-- Transaction-->
+	
+	<div class="container" id="MDiv" ng-show="menu === 4" ng-init="trnasaction = 1">
+		<table>
+			<thead>
+				<span>
+					<br><h2 id="titleTable" ng-show="transaction === 1">Transactions of movements</h2><hr>
+					<br><h2 id="titleTable" ng-show="transaction === 0">Purchase transactions</h2><hr>
+				
+				</span>
+			</thead>
+						<ul style="list-style: none">
+				        	<li class="nav-item dropdown" ng-show="storeC.userconnect === 1">
+				        		<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="">Transaction type</a>
+				        		<div class="dropdown-menu" x-plasement="top-start">
+				        			<a class="dropdown-item" ng-click="storeC.allTransactions(); transaction = 1" href="#">Transactions of movements</a>
+				        			<a class="dropdown-item" ng-click="storeC.purchaseTransactions(); transaction = 0;" href="#">Purchase Transactions</a>
+
+				        		</div>
+				        	</li>
+				        </ul>
+			<tbody ng-show="transaction === 1"> 
+				<tr>
+					<th>Date</th>
+					<th>Description</th>
+				</tr>
+				<tr ng-repeat="transaction in storeC.transaction | orderBy:'-date' |filter:buscame "  id="Art" >
+					<td> 	
+						<p>
+    						{{transaction.date}}
+    					</p>
+					</td>
+					<td>
+						<p>
+							{{transaction.description}}						
+						</p>
+					</td>
+				</tr>
+			</tbody>
+
+			<tbody ng-show="transaction === 0"> 
+				<tr>
+					<th>Date</th>
+					<th>User id</th>
+					<th>Product name</th>
+					<th>Price</th>
+				</tr>
+				<tr ng-repeat="transaction in storeC.ptransaction | orderBy:'-date' |filter:buscame "  id="Art" >
+					<td> 	
+						<p>
+    						{{transaction.date}}
+    					</p>
+					</td>
+					<td>
+						<p>
+								{{transaction.userid}}						
+						</p>
+					</td>
+					<td>
+						<p>
+								{{transaction.productname}}						
+						</p>
+					</td>
+					<td>
+						<p>
+								{{transaction.price}}						
+						</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+<div ng-show="menu === 5">
+	<h2>Add product</h2>
+	<form>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text"  class="form-control" id="name" ng-model="newP.name">
+        </div>
+        <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number"  class="form-control" id="email" ng-model="newP.price">
+        </div>
+        <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text"  class="form-control" id="age" ng-model="newP.description">
+        </div>
+        <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" class="form-control" id="address" ng-model="newP.stock">
+        </div>
+        <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="text"  class="form-control" id="country" ng-model="newP.image">      
+        </div>
+        <div class="form group" pull rigth>
+            <input class="form-control btn btn-lg btn-primary" value="Create" type ="button" id="submit" ng-click="storeC.addProduct(newP);" rel="modal:close">
+        </div>
+    </form>
+</div>
+
+
+
+</body>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/darkly/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.js"></script>
+	<!-- Remember to include jQuery :) -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+	<!-- jQuery Modal -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	
+
+	<script src="../js/app.js"></script>
+</html>

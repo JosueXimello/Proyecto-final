@@ -1,0 +1,21 @@
+{
+  "name": "proyectofinal",
+  "version": "1.0.0",
+  "description": "Proyecto final - Programacièon en ambiente cliente Servidor - Tienda de Gemas con roles de usuario",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Josue Ximello Rios",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "crypto": "^1.0.1",
+    "express": "^4.16.2",
+    "i": "^0.3.6",
+    "mongoose": "^4.13.5",
+    "nodemon": "^1.12.1"
+  }
+}

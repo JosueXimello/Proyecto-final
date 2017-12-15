@@ -1,0 +1,129 @@
+body{
+	background-image: url("../public/img/img5.jpg");
+	background-size:cover;
+}
+header{
+	position: fixed;
+	width: 100%;
+	z-index: 4;
+}
+#cuerpo{
+	background-color: white;
+	border-radius: 10px;
+	width: center;
+	text-align: center;
+	color: black;
+}
+#imgCent{
+	text-align: center;
+	size: cover;
+}
+img{
+	width: 100%;
+	height: auto;
+}
+#ImgProd{
+	width: 100px;
+	height: 100px;
+}
+#MDiv{
+	background-color: white;
+	border-radius: 5px;
+	color: black;
+	position: relative;
+	z-index: 1;
+}
+#MDiv1{
+	background-color: white;
+	border-radius: 5px;
+	color: black;
+	position: relative;
+	width: 300px;
+	height: auto;
+}
+#titleTable{
+	size: 24;
+	text-align: center;
+}
+#Art{
+	color: grey;
+	border-radius: 10px;
+	box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255,144,0,0.6);
+    outline: 0 none;
+    background-color: white;
+	
+}
+
+#titPrinc{
+	text-align: center;
+	color: ;
+	font-weight: bold;
+	font-size: 30px;
+	font: oblique bold cursive;
+	text-shadow: blue 0.1em 0.1em 0.2em;
+	font-style:  'PT Sans', Verdana, Sans-serif;
+}
+#TextWel{
+	font-style: italic;
+}
+input{
+	display: block;
+	margin-bottom:5px;
+	border-radius: 5px;
+	border-color:black;
+	box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255,144,0,0.6);
+    outline: 0 none;
+}
+
+.form-group{
+	color: black;
+}
+
+#getUnico{
+	color: black;
+	z-index: 5;
+}
+
+.aboutText{
+	color: black;
+	text-align: center;
+	font-weight: bold;
+	font-style: italic;
+	background-image: url("../public/img/img7.png");
+}
+
+#div-prod{
+	background-color: white: 
+}
+
+.form-group{
+	color: black;
+}
+
+#getUnico{
+	color: black;
+	z-index: 5;
+}
+
+.cuadProd{
+	float: left;
+}
+
+#Comprar{
+	color: black;
+}
+#about{
+	z-index: 1;
+}
+
+#Editar{
+	z-index: 5;
+}
+
+#Comprar{
+	z-index: 5;
+}
+
+#ex1{
+	z-index: 5;
+}
